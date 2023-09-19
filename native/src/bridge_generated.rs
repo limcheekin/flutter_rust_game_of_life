@@ -23,7 +23,7 @@ use std::sync::Arc;
 // Section: wire functions
 
 fn wire_platform_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Platform>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, _, Platform>(
         WrapInfo {
             debug_name: "platform",
             port: Some(port_),
@@ -33,7 +33,7 @@ fn wire_platform_impl(port_: MessagePort) {
     )
 }
 fn wire_rust_release_mode_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, bool>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, _, bool>(
         WrapInfo {
             debug_name: "rust_release_mode",
             port: Some(port_),
