@@ -20,6 +20,30 @@ class SurrealdbPlatform extends FlutterRustBridgeBase<SurrealdbWire>
 
 // Section: api2wire
 
+  @protected
+  String api2wire_String(String raw) {
+    return raw;
+  }
+
+  @protected
+  Object api2wire_SurrealAny(SurrealAny raw) {
+    return raw.shareOrMove();
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_surreal_db(SurrealDB raw) {
+    return api2wire_surreal_db(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_surreal_db(SurrealDB raw) {
+    return [api2wire_SurrealAny(raw.db)];
+  }
+
+  @protected
+  Uint8List api2wire_uint_8_list(Uint8List raw) {
+    return raw;
+  }
 // Section: finalizer
 }
 
@@ -33,6 +57,8 @@ external SurrealdbWasmModule get wasmModule;
 class SurrealdbWasmModule implements WasmModule {
   external Object /* Promise */ call([String? moduleName]);
   external SurrealdbWasmModule bind(dynamic thisArg, String moduleName);
+  external dynamic /* void */ wire_connect__method__SurrealDB(
+      NativePortType port_, List<dynamic> that, String endpoint);
 }
 
 // Section: WASM wire connector
@@ -40,4 +66,8 @@ class SurrealdbWasmModule implements WasmModule {
 class SurrealdbWire extends FlutterRustBridgeWasmWireBase<SurrealdbWasmModule> {
   SurrealdbWire(FutureOr<WasmModule> module)
       : super(WasmModule.cast<SurrealdbWasmModule>(module));
+
+  void wire_connect__method__SurrealDB(
+          NativePortType port_, List<dynamic> that, String endpoint) =>
+      wasmModule.wire_connect__method__SurrealDB(port_, that, endpoint);
 }

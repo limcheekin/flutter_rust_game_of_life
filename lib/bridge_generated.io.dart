@@ -17,9 +17,48 @@ class SurrealdbPlatform extends FlutterRustBridgeBase<SurrealdbWire> {
 
 // Section: api2wire
 
+  @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_String(String raw) {
+    return api2wire_uint_8_list(utf8.encoder.convert(raw));
+  }
+
+  @protected
+  wire_SurrealAny api2wire_SurrealAny(SurrealAny raw) {
+    final ptr = inner.new_SurrealAny();
+    _api_fill_to_wire_SurrealAny(raw, ptr);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_SurrealDB> api2wire_box_autoadd_surreal_db(SurrealDB raw) {
+    final ptr = inner.new_box_autoadd_surreal_db_0();
+    _api_fill_to_wire_surreal_db(raw, ptr.ref);
+    return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_uint_8_list(Uint8List raw) {
+    final ans = inner.new_uint_8_list_0(raw.length);
+    ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
+    return ans;
+  }
 // Section: finalizer
 
 // Section: api_fill_to_wire
+
+  void _api_fill_to_wire_SurrealAny(
+      SurrealAny apiObj, wire_SurrealAny wireObj) {
+    wireObj.ptr = apiObj.shareOrMove();
+  }
+
+  void _api_fill_to_wire_box_autoadd_surreal_db(
+      SurrealDB apiObj, ffi.Pointer<wire_SurrealDB> wireObj) {
+    _api_fill_to_wire_surreal_db(apiObj, wireObj.ref);
+  }
+
+  void _api_fill_to_wire_surreal_db(SurrealDB apiObj, wire_SurrealDB wireObj) {
+    wireObj.db = api2wire_SurrealAny(apiObj.db);
+  }
 }
 
 // ignore_for_file: camel_case_types, non_constant_identifier_names, avoid_positional_boolean_parameters, annotate_overrides, constant_identifier_names
@@ -118,6 +157,62 @@ class SurrealdbWire implements FlutterRustBridgeWireBase {
   late final _init_frb_dart_api_dl = _init_frb_dart_api_dlPtr
       .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
+  void wire_connect__method__SurrealDB(
+    int port_,
+    ffi.Pointer<wire_SurrealDB> that,
+    ffi.Pointer<wire_uint_8_list> endpoint,
+  ) {
+    return _wire_connect__method__SurrealDB(
+      port_,
+      that,
+      endpoint,
+    );
+  }
+
+  late final _wire_connect__method__SurrealDBPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int64, ffi.Pointer<wire_SurrealDB>,
+                  ffi.Pointer<wire_uint_8_list>)>>(
+      'wire_connect__method__SurrealDB');
+  late final _wire_connect__method__SurrealDB =
+      _wire_connect__method__SurrealDBPtr.asFunction<
+          void Function(int, ffi.Pointer<wire_SurrealDB>,
+              ffi.Pointer<wire_uint_8_list>)>();
+
+  wire_SurrealAny new_SurrealAny() {
+    return _new_SurrealAny();
+  }
+
+  late final _new_SurrealAnyPtr =
+      _lookup<ffi.NativeFunction<wire_SurrealAny Function()>>('new_SurrealAny');
+  late final _new_SurrealAny =
+      _new_SurrealAnyPtr.asFunction<wire_SurrealAny Function()>();
+
+  ffi.Pointer<wire_SurrealDB> new_box_autoadd_surreal_db_0() {
+    return _new_box_autoadd_surreal_db_0();
+  }
+
+  late final _new_box_autoadd_surreal_db_0Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<wire_SurrealDB> Function()>>(
+          'new_box_autoadd_surreal_db_0');
+  late final _new_box_autoadd_surreal_db_0 = _new_box_autoadd_surreal_db_0Ptr
+      .asFunction<ffi.Pointer<wire_SurrealDB> Function()>();
+
+  ffi.Pointer<wire_uint_8_list> new_uint_8_list_0(
+    int len,
+  ) {
+    return _new_uint_8_list_0(
+      len,
+    );
+  }
+
+  late final _new_uint_8_list_0Ptr = _lookup<
+          ffi
+          .NativeFunction<ffi.Pointer<wire_uint_8_list> Function(ffi.Int32)>>(
+      'new_uint_8_list_0');
+  late final _new_uint_8_list_0 = _new_uint_8_list_0Ptr
+      .asFunction<ffi.Pointer<wire_uint_8_list> Function(int)>();
+
   void free_WireSyncReturn(
     WireSyncReturn ptr,
   ) {
@@ -134,6 +229,21 @@ class SurrealdbWire implements FlutterRustBridgeWireBase {
 }
 
 final class _Dart_Handle extends ffi.Opaque {}
+
+final class wire_SurrealAny extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> ptr;
+}
+
+final class wire_SurrealDB extends ffi.Struct {
+  external wire_SurrealAny db;
+}
+
+final class wire_uint_8_list extends ffi.Struct {
+  external ffi.Pointer<ffi.Uint8> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
 
 typedef DartPostCObjectFnType = ffi.Pointer<
     ffi.NativeFunction<

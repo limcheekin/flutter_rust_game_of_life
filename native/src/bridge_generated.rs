@@ -22,6 +22,30 @@ use std::sync::Arc;
 
 // Section: wire functions
 
+fn wire_connect__method__SurrealDB_impl(
+    port_: MessagePort,
+    that: impl Wire2Api<SurrealDB> + UnwindSafe,
+    endpoint: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, (), _>(
+        WrapInfo {
+            debug_name: "connect__method__SurrealDB",
+            port: Some(port_),
+            mode: FfiCallMode::Stream,
+        },
+        move || {
+            let api_that = that.wire2api();
+            let api_endpoint = endpoint.wire2api();
+            move |task_callback| {
+                Result::<_, ()>::Ok(SurrealDB::connect(
+                    &api_that,
+                    task_callback.stream_sink::<_, ()>(),
+                    api_endpoint,
+                ))
+            }
+        },
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks
@@ -44,6 +68,13 @@ where
         (!self.is_null()).then(|| self.wire2api())
     }
 }
+
+impl Wire2Api<u8> for u8 {
+    fn wire2api(self) -> u8 {
+        self
+    }
+}
+
 // Section: impl IntoDart
 
 // Section: executor

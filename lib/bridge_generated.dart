@@ -20,12 +20,42 @@ class SurrealdbImpl implements Surrealdb {
   factory SurrealdbImpl.wasm(FutureOr<WasmModule> module) =>
       SurrealdbImpl(module as ExternalLibrary);
   SurrealdbImpl.raw(this._platform);
+  Stream<void> connectMethodSurrealDb(
+      {required SurrealDB that, required String endpoint, dynamic hint}) {
+    var arg0 = _platform.api2wire_box_autoadd_surreal_db(that);
+    var arg1 = _platform.api2wire_String(endpoint);
+    return _platform.executeStream(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_connect__method__SurrealDB(port_, arg0, arg1),
+      parseSuccessData: _wire2api_unit,
+      parseErrorData: null,
+      constMeta: kConnectMethodSurrealDbConstMeta,
+      argValues: [that, endpoint],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kConnectMethodSurrealDbConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "connect__method__SurrealDB",
+        argNames: ["that", "endpoint"],
+      );
+
   void dispose() {
     _platform.dispose();
   }
 // Section: wire2api
+
+  void _wire2api_unit(dynamic raw) {
+    return;
+  }
 }
 
 // Section: api2wire
+
+@protected
+int api2wire_u8(int raw) {
+  return raw;
+}
 
 // Section: finalizer

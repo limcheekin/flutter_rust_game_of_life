@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'ffi.dart' if (dart.library.html) 'ffi_web.dart';
 
 void main() {
+  final surreal = SurrealDB(bridge: db, db: SurrealAny.fromRaw(0, 0, db));
+  surreal.connect(endpoint: "indxdb://test");
   runApp(const MyApp());
 }
 
@@ -90,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("You're running on ${db}"),
+            const Text("You're running on"),
             // To render the results of a Future, a FutureBuilder is used which
             // turns a Future into an AsyncSnapshot, which can be used to
             // extract the error state, the loading state and the data if

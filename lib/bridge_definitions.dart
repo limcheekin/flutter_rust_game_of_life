@@ -10,4 +10,39 @@ import 'package:meta/meta.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:uuid/uuid.dart';
 
-abstract class Surrealdb {}
+abstract class Surrealdb {
+  Stream<void> connectMethodSurrealDb(
+      {required SurrealDB that, required String endpoint, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kConnectMethodSurrealDbConstMeta;
+}
+
+@sealed
+class SurrealAny extends FrbOpaque {
+  final Surrealdb bridge;
+  SurrealAny.fromRaw(int ptr, int size, this.bridge) : super.unsafe(ptr, size);
+  @override
+  DropFnType get dropFn => bridge.dropOpaqueSurrealAny;
+
+  @override
+  ShareFnType get shareFn => bridge.shareOpaqueSurrealAny;
+
+  @override
+  OpaqueTypeFinalizer get staticFinalizer => bridge.SurrealAnyFinalizer;
+}
+
+class SurrealDB {
+  final Surrealdb bridge;
+  final SurrealAny db;
+
+  const SurrealDB({
+    required this.bridge,
+    required this.db,
+  });
+
+  Stream<void> connect({required String endpoint, dynamic hint}) =>
+      bridge.connectMethodSurrealDb(
+        that: this,
+        endpoint: endpoint,
+      );
+}
